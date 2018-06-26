@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import SelectableNestedList from '../components/SelectableNestedList'
+import TaxonSelection from '../components/TaxonSelection'
 
 const mapStateToProps = state => ({
   taxa: state.get('taxa'),
@@ -10,4 +10,4 @@ const mapDispatchToProps = dispatch => Object();
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SelectableNestedList)
+)(TaxonSelection)

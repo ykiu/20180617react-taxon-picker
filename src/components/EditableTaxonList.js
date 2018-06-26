@@ -10,7 +10,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 import createIndex from '../indexCreator';
 
-class NestedList extends Component {
+class EditableTaxonList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -78,4 +78,4 @@ class NestedList extends Component {
   }
 }
 
-export default NestedList;
+export default EditableTaxonList;

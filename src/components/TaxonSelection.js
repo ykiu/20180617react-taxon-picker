@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
-import NestedList from './NestedList';
+import EditableTaxonList from './EditableTaxonList';
 import { withStyles } from '@material-ui/core';
 
 
@@ -69,7 +69,7 @@ class SelectableNestedList extends Component {
   render() {
     return (
       <div>
-        <NestedList
+        <EditableTaxonList
           taxa={this.props.taxa}
           onItemSelect={this.handleItemSelect.bind(this)}
         />
