@@ -27,7 +27,7 @@ const styles = {
 function DrawerBar(props) {
   const { classes } = props;
   return (
-    <AppBar position="static">
+    <AppBar position="static" color="default">
       <Toolbar>
         <Typography variant="title" color="inherit" className={classes.flex}>
           {props.children}
