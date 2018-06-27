@@ -18,6 +18,18 @@ const default_state = Map([
     ['name', 'Sect. Mitratae'],
     ['taxon', '3'],
   ])],
+
+  ['4', Map([
+    ['id', '4'],
+    ['name', 'Sect. Carex'],
+    ['taxon', '4'],
+  ])],
+
+  ['5', Map([
+    ['id', '5'],
+    ['name', 'Cyperus'],
+    ['taxon', '5'],
+  ])],
 ]);
 
 export default function(state, action){

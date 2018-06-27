@@ -18,6 +18,24 @@ const default_state = Map([
     ['name', 'ヌカスゲ節'],
     ['taxon', '3'],
   ])],
+
+  ['3', Map([
+    ['id', '3'],
+    ['name', 'ヌカスゲ節'],
+    ['taxon', '3'],
+  ])],
+
+  ['4', Map([
+    ['id', '4'],
+    ['name', 'ビロードスゲ節'],
+    ['taxon', '4'],
+  ])],
+
+  ['5', Map([
+    ['id', '5'],
+    ['name', 'カヤツリグサ属'],
+    ['taxon', '5'],
+  ])],
 ]);
 
 export default function(state, action){

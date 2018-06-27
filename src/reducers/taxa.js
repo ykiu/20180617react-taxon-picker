@@ -15,6 +15,17 @@ const default_state = Map([
     ['id', '3'],
     ['parent', '2'],
   ])],
+
+  ['4', Map([
+    ['id', '4'],
+    ['parent', '2'],
+  ])],
+
+  ['5', Map([
+    ['id', '5'],
+    ['parent', '1'],
+  ])],
+
 ]);
 
 export default function(state, action){
