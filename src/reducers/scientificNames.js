@@ -3,17 +3,20 @@ import {Map} from 'immutable';
 const default_state = Map([
   ['1', Map([
     ['id', '1'],
-    ['parent', null],
+    ['name', 'Cyperaceae'],
+    ['taxon', '1'],
   ])],
 
   ['2', Map([
     ['id', '2'],
-    ['parent', '1'],
+    ['name', 'Carex'],
+    ['taxon', '2'],
   ])],
 
   ['3', Map([
     ['id', '3'],
-    ['parent', '2'],
+    ['name', 'Sect. Mitratae'],
+    ['taxon', '3'],
   ])],
 ]);
 

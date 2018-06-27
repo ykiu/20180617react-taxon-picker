@@ -14,32 +14,40 @@ class EditableTaxonList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      openNodes: Set()
+      openNodeIDs: Set()
     };
   }
 
-  toggleNode(node) {
+  toggleNode(nodeID) {
     const childNodesByParentIDs = createIndex(this.props.taxa, 'parent');
-    const openNodes = this.state.openNodes;
-    if (this.state.openNodes.has(node)) {
-      const childNodes = childNodesByParentIDs.get(node.get('id'), List());
-      this.setState({openNodes: openNodes.filterNot(
-        x => (x === node) || childNodes.includes(x)
+    const openNodeIDs = this.state.openNodeIDs;
+    if (this.state.openNodeIDs.has(nodeID)) {
+      const childNodeIDs = childNodesByParentIDs.
+        get(nodeID, List()).
+        map(node => node.get('id'));
+      this.setState({openNodeIDs: openNodeIDs.filterNot(
+        x => (x === nodeID) || childNodeIDs.includes(x)
       )});
     } else {
-      this.setState({openNodes: openNodes.add(node)});
+      this.setState({openNodeIDs: openNodeIDs.add(nodeID)});
     }
   }
 
-  handleItemClick(node) {
-    this.toggleNode(node);
-    this.props.onItemSelect(node);
+  handleItemClick(nodeID) {
+    this.toggleNode(nodeID);
+    this.props.onItemSelect(nodeID);
   }
 
   render() {
     const taxaByIDs = this.props.taxa;
+    const commonNamesByIDs = this.props.commonNames;
+    const scientificNamesByIDs = this.props.scientificNames;
     /**@type {Map<Map, Map>} */
     const childNodesByParentIDs = createIndex(taxaByIDs, 'parent');
+    /**@type {Map<Map, Map>} */
+    const commonNamesByTaxonIDs = createIndex(commonNamesByIDs, 'taxon');
+    /**@type {Map<Map, Map>} */
+    const scientificNamesByTaxonIDs = createIndex(scientificNamesByIDs, 'taxon');
 
     /**@type {Array<Map>} */
     let nodeStack = childNodesByParentIDs.get(null).toArray();
@@ -47,21 +55,22 @@ class EditableTaxonList extends Component {
 
     while (nodeStack.length) {
       const currentNode = nodeStack.pop();
+      const currentNodeID = currentNode.get('id')
 
-      if (this.state.openNodes.has(currentNode)) {
-        const childNodes = childNodesByParentIDs.get(currentNode.get('id'), List());
+      if (this.state.openNodeIDs.has(currentNodeID)) {
+        const childNodes = childNodesByParentIDs.get(currentNodeID, List());
         Array.prototype.push.apply(nodeStack, childNodes.toArray());
       }
 
       components.push(
-        <ListItem button onClick={() => this.handleItemClick(currentNode)}>
+        <ListItem button onClick={() => this.handleItemClick(currentNodeID)}>
           <ListItemText
-            primary={currentNode.get('common_name')}
-            secondary={currentNode.get('scientific_name')}
+            primary={commonNamesByTaxonIDs.getIn([currentNodeID, 0, 'name'])}
+            secondary={scientificNamesByTaxonIDs.getIn([currentNodeID, 0, 'name'])}
           />
           {
-            childNodesByParentIDs.has(currentNode.get('id'))?
-            (this.state.openNodes.has(currentNode) ? <ExpandLess /> : <ExpandMore />):
+            childNodesByParentIDs.has(currentNodeID)?
+            (this.state.openNodeIDs.has(currentNodeID) ? <ExpandLess /> : <ExpandMore />):
             null
           }
         </ListItem>

@@ -6,19 +6,20 @@ import EditableTaxonList from './EditableTaxonList';
 import TaxonDrawer from './TaxonDrawer';
 import TaxonSearch from './TaxonSearch';
 
+import createIndex from '../indexCreator';
+
 class TaxonSelection extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedItemID: null,
       isTaxonDrawerOpen: false,
       searchText: '',
     };
   }
 
-  handleItemSelect(node) {
+  handleItemSelect(nodeID) {
     this.setState({
-      selectedNode: node,
+      selectedNodeID: nodeID,
       isTaxonDrawerOpen: true,
     });
   }
@@ -35,18 +36,20 @@ class TaxonSelection extends Component {
     console.log(event.target.value)
     this.setState({
       searchText: event.target.value,
-      selectedItemID: null,
       isTaxonDrawerOpen: false,
     })
   }
 
 
   render() {
+    const commonNamesByTaxonID = createIndex(this.props.commonNames, 'taxon');
     return (
       <div>
         <TaxonSearch onSearchFieldChange={this.handleSearchFieldChange.bind(this)} />
         <EditableTaxonList
           taxa={this.props.taxa}
+          commonNames={this.props.commonNames}
+          scientificNames={this.props.scientificNames}
           onItemSelect={this.handleItemSelect.bind(this)}
         />
         <Drawer
@@ -61,9 +64,9 @@ class TaxonSelection extends Component {
             role="button"
           >
             {
-              this.state.selectedNode === undefined?
+              this.state.selectedNodeID === undefined?
               null:
-              this.state.selectedNode.get('common_name')
+              commonNamesByTaxonID.getIn([this.state.selectedNodeID, 0, 'name'])
             }
           </TaxonDrawer>
         </Drawer>
