@@ -1,101 +1,75 @@
 import React, { Component } from 'react';
 
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import Drawer from '@material-ui/core/Drawer';
 
 import EditableTaxonList from './EditableTaxonList';
-import { withStyles } from '@material-ui/core';
+import TaxonDrawer from './TaxonDrawer';
+import TaxonSearch from './TaxonSearch';
 
-
-
-const styles = {
-  root: {
-    flexGrow: 1,
-  },
-  flex: {
-    flex: 1,
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
-  },
-};
-
-function DrawerBar(props) {
-  const { classes } = props;
-  return (
-    <AppBar position="static" color="default">
-      <Toolbar>
-        <Typography variant="title" color="inherit" className={classes.flex}>
-          {props.children}
-        </Typography>
-        <Button color="inherit">選択</Button>
-      </Toolbar>
-    </AppBar>
-  );
-}
-
-const StyledDrawerBar = withStyles(styles)(DrawerBar);
-
-
-
-class SelectableNestedList extends Component {
+class TaxonSelection extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedItemID: null,
-      isDrawerOpen: false,
+      isTaxonDrawerOpen: false,
+      searchText: '',
     };
   }
 
   handleItemSelect(node) {
     this.setState({
       selectedNode: node,
-      isDrawerOpen: true,
+      isTaxonDrawerOpen: true,
     });
   }
 
-  handleDrawerOpen() {}
+  handleTaxonDrawerOpen() {}
 
-  handleDrawerClose() {
+  handleTaxonDrawerClose() {
     this.setState({
-      isDrawerOpen: false,
+      isTaxonDrawerOpen: false,
     });
   }
+
+  handleSearchFieldChange(event) {
+    console.log(event.target.value)
+    this.setState({
+      searchText: event.target.value,
+      selectedItemID: null,
+      isTaxonDrawerOpen: false,
+    })
+  }
+
 
   render() {
     return (
       <div>
+        <TaxonSearch onSearchFieldChange={this.handleSearchFieldChange.bind(this)} />
         <EditableTaxonList
           taxa={this.props.taxa}
           onItemSelect={this.handleItemSelect.bind(this)}
         />
-        <SwipeableDrawer
-          open={this.state.isDrawerOpen}
-          onClose={this.handleDrawerClose.bind(this)}
-          onOpen={this.handleDrawerOpen.bind(this)}
+        <Drawer
+          open={this.state.isTaxonDrawerOpen}
+          onClose={this.handleTaxonDrawerClose.bind(this)}
+          onOpen={this.handleTaxonDrawerOpen.bind(this)}
           anchor='bottom'
           variant='persistent'
         >
-          <div
+          <TaxonDrawer
             tabIndex={0}
             role="button"
           >
-            <StyledDrawerBar>
-              {
-                this.state.selectedNode === undefined?
-                null:
-                this.state.selectedNode.get('common_name')
-              }
-            </StyledDrawerBar>
-          </div>
-        </SwipeableDrawer>
+            {
+              this.state.selectedNode === undefined?
+              null:
+              this.state.selectedNode.get('common_name')
+            }
+          </TaxonDrawer>
+        </Drawer>
       </div>
     )
   }
 }
 
-export default SelectableNestedList;
+export default TaxonSelection;
