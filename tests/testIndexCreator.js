@@ -4,8 +4,8 @@ const List = require('immutable').List;
 
 const createIndex = require('../src/indexCreator');
 
-describe('indexCreator', () => {
-    it('returns a mapping from field values to rows', () => {
+describe('createIndex()', () => {
+    it('returns the mapping from field values to rows', () => {
         const originalMap = Map([
             [1234, Map([
                 ['id', 1234],
@@ -13,6 +13,10 @@ describe('indexCreator', () => {
             ])],
             [2345, Map([
                 ['id', 2345],
+                ['name', 'bar'],
+            ])],
+            [3456, Map([
+                ['id', 3456],
                 ['name', 'bar'],
             ])],
         ]);
@@ -26,6 +30,10 @@ describe('indexCreator', () => {
             ['bar', List([
                 Map([
                     ['id', 2345],
+                    ['name', 'bar'],
+                ]),
+                Map([
+                    ['id', 3456],
                     ['name', 'bar'],
                 ]),
             ])],

@@ -7,11 +7,13 @@ const List = require('immutable').List;
  */
 module.exports = function createIndex(data, fieldName) {
   return data.reduce(
-    (index, row) => 
-      index.set(
-        row.get(fieldName),
-        List([row])
-      ),
+    (index, row) => {
+      const fieldValue = row.get(fieldName)
+      return index.set(
+        fieldValue,
+        index.get(fieldValue, List()).push(row)
+      )
+    },
     Map(),
   )
 };
