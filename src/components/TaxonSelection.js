@@ -24,8 +24,6 @@ class TaxonSelection extends Component {
     });
   }
 
-  handleTaxonDrawerOpen() {}
-
   handleTaxonDrawerClose() {
     this.setState({
       isTaxonDrawerOpen: false,
@@ -55,7 +53,6 @@ class TaxonSelection extends Component {
         <Drawer
           open={this.state.isTaxonDrawerOpen}
           onClose={this.handleTaxonDrawerClose.bind(this)}
-          onOpen={this.handleTaxonDrawerOpen.bind(this)}
           anchor='bottom'
           variant='persistent'
         >

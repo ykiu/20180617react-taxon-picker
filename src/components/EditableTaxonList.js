@@ -22,9 +22,9 @@ class EditableTaxonList extends Component {
     const childNodesByParentIDs = createIndex(this.props.taxa, 'parent');
     const openNodeIDs = this.state.openNodeIDs;
     if (this.state.openNodeIDs.has(nodeID)) {
-      const childNodeIDs = childNodesByParentIDs.
-        get(nodeID, List()).
-        map(node => node.get('id'));
+      const childNodeIDs = childNodesByParentIDs
+        .get(nodeID, List())
+        .map(node => node.get('id'));
       this.setState({openNodeIDs: openNodeIDs.filterNot(
         x => (x === nodeID) || childNodeIDs.includes(x)
       )});
@@ -63,7 +63,7 @@ class EditableTaxonList extends Component {
       }
 
       components.push(
-        <ListItem button onClick={() => this.handleItemClick(currentNodeID)}>
+        <ListItem button onClick={() => this.handleItemClick(currentNodeID)} key={currentNodeID}>
           <ListItemText
             primary={commonNamesByTaxonIDs.getIn([currentNodeID, 0, 'name'])}
             secondary={scientificNamesByTaxonIDs.getIn([currentNodeID, 0, 'name'])}
