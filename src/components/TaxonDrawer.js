@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 
 import { withStyles } from '@material-ui/core';
 
+import createIndex from '../indexCreator';
 
 
 const styles = {
@@ -28,7 +29,13 @@ function TaxonDrawer(props) {
     <AppBar position="static" color="default">
       <Toolbar>
         <Typography variant="title" color="inherit" className={classes.flex}>
-          {props.children}
+          {(() => {
+            if (props.selectedTaxonID === null) {
+              return null;
+            }
+            const commonNamesByTaxonIDs = createIndex(props.commonNames, 'taxon');
+            return commonNamesByTaxonIDs.getIn([props.selectedTaxonID, 0, 'name']);
+          })()}
         </Typography>
         <Button color="inherit">選択</Button>
       </Toolbar>

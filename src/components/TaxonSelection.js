@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 
 import Drawer from '@material-ui/core/Drawer';
 
+import TaxonDrawerContainer from '../containers/TaxonDrawerContainer';
 import FilteredTaxonList from '../containers/FilteredTaxonList';
-import TaxonDrawer from './TaxonDrawer';
 import TaxonSearch from './TaxonSearch';
 
-import createIndex from '../indexCreator';
 
 class TaxonSelection extends Component {
   constructor(props) {
@@ -14,12 +13,13 @@ class TaxonSelection extends Component {
     this.state = {
       isTaxonDrawerOpen: false,
       searchText: '',
+      selectedTaxonID: null
     };
   }
 
-  handleItemSelect(nodeID) {
+  handleItemSelect(taxonID) {
     this.setState({
-      selectedNodeID: nodeID,
+      selectedTaxonID: taxonID,
       isTaxonDrawerOpen: true,
     });
   }
@@ -38,7 +38,6 @@ class TaxonSelection extends Component {
   }
 
   render() {
-    const commonNamesByTaxonID = createIndex(this.props.commonNames, 'taxon');
     return (
       <div>
         <TaxonSearch onSearchFieldChange={this.handleSearchFieldChange.bind(this)} />
@@ -52,16 +51,9 @@ class TaxonSelection extends Component {
           anchor='bottom'
           variant='persistent'
         >
-          <TaxonDrawer
-            tabIndex={0}
-            role="button"
-          >
-            {
-              this.state.selectedNodeID === undefined?
-              null:
-              commonNamesByTaxonID.getIn([this.state.selectedNodeID, 0, 'name'])
-            }
-          </TaxonDrawer>
+          <TaxonDrawerContainer
+            selectedTaxonID={this.state.selectedTaxonID}
+          />
         </Drawer>
       </div>
     )

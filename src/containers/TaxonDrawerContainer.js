@@ -1,10 +1,11 @@
 import { connect } from 'react-redux'
-import TaxonSelection from '../components/TaxonSelection'
+import TaxonDrawer from '../components/TaxonDrawer'
 
-const mapStateToProps = state => ({
-  taxa: state.get('taxa'),
+const mapStateToProps = (state, props) => ({
   commonNames: state.get('commonNames'),
-  scientificNames: state.get('scientificNames'),
+  selectedTaxonID: props.selectedTaxonID,
+  tabIndex: 0,
+  role: 'button'
 })
 
 const mapDispatchToProps = dispatch => Object();
@@ -12,4 +13,4 @@ const mapDispatchToProps = dispatch => Object();
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TaxonSelection)
+)(TaxonDrawer)
