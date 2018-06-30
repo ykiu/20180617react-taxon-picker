@@ -33,7 +33,6 @@ class TaxonSelection extends Component {
   }
 
   handleSearchFieldChange(event) {
-    console.log(event.target.value)
     this.setState({
       searchText: event.target.value,
       isTaxonDrawerOpen: false,
