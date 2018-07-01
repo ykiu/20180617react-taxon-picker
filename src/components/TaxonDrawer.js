@@ -33,7 +33,7 @@ function TaxonDrawer(props) {
             if (props.selectedTaxonID === null) {
               return null;
             }
-            const commonNamesByTaxonIDs = createIndex(props.commonNames, 'taxon');
+            const commonNamesByTaxonIDs = props.commonNamesByTaxonIDs;
             return commonNamesByTaxonIDs.getIn([props.selectedTaxonID, 0, 'name']);
           })()}
         </Typography>

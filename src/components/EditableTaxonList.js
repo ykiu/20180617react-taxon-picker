@@ -19,7 +19,7 @@ class EditableTaxonList extends Component {
   }
 
   toggleNode(nodeID) {
-    const childNodesByParentIDs = createIndex(this.props.taxa, 'parent');
+    const childNodesByParentIDs = this.props.childTaxaByParentIDs;
     const openNodeIDs = this.state.openNodeIDs;
     if (this.state.openNodeIDs.has(nodeID)) {
       const childNodeIDs = childNodesByParentIDs
@@ -39,18 +39,15 @@ class EditableTaxonList extends Component {
   }
 
   render() {
-    const taxaByIDs = this.props.taxa;
-    const commonNamesByIDs = this.props.commonNames;
-    const scientificNamesByIDs = this.props.scientificNames;
     /**@type {Map<Map, Map>} */
-    const childNodesByParentIDs = createIndex(taxaByIDs, 'parent');
+    const childNodesByParentIDs = this.props.childTaxaByParentIDs;
     /**@type {Map<Map, Map>} */
-    const commonNamesByTaxonIDs = createIndex(commonNamesByIDs, 'taxon');
+    const commonNamesByTaxonIDs = this.props.commonNamesByTaxonIDs;
     /**@type {Map<Map, Map>} */
-    const scientificNamesByTaxonIDs = createIndex(scientificNamesByIDs, 'taxon');
+    const scientificNamesByTaxonIDs = this.props.scientificNamesByTaxonIDs;
 
     /**@type {Array<Map>} */
-    let nodeStack = childNodesByParentIDs.get(null).toArray();
+    let nodeStack = childNodesByParentIDs.get(null, List()).toArray();
     const components = [];
 
     while (nodeStack.length) {

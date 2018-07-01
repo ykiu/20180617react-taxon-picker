@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Drawer from '@material-ui/core/Drawer';
 
 import TaxonDrawerContainer from '../containers/TaxonDrawerContainer';
-import FilteredTaxonList from '../containers/FilteredTaxonList';
+import TaxonListFilteredBySearchText from '../containers/TaxonListFilteredBySearchText';
 import TaxonSearch from './TaxonSearch';
 
 
@@ -41,7 +41,7 @@ class TaxonSelection extends Component {
     return (
       <div>
         <TaxonSearch onSearchFieldChange={this.handleSearchFieldChange.bind(this)} />
-        <FilteredTaxonList
+        <TaxonListFilteredBySearchText
           searchText={this.state.searchText}
           onItemSelect={this.handleItemSelect.bind(this)}
         />

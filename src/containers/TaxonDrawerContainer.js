@@ -1,16 +1,25 @@
 import { connect } from 'react-redux'
 import TaxonDrawer from '../components/TaxonDrawer'
+import makeCreateIndex from '../selectors/createIndex'
 
-const mapStateToProps = (state, props) => ({
-  commonNames: state.get('commonNames'),
-  selectedTaxonID: props.selectedTaxonID,
-  tabIndex: 0,
-  role: 'button'
-})
+
+function makeMapStateToProps() {
+  const createIndexOnCommonNamesByTaxonIDs = makeCreateIndex(state => state.get('commonNames'), 'taxon');
+  return function mapStateToProps(state, props) {
+    return {
+      ...props,
+      commonNames: state.get('commonNames'),
+      selectedTaxonID: props.selectedTaxonID,
+      tabIndex: 0,
+      role: 'button',
+      commonNamesByTaxonIDs: createIndexOnCommonNamesByTaxonIDs(state, props),
+    }
+  }
+}
 
 const mapDispatchToProps = dispatch => Object();
 
 export default connect(
-  mapStateToProps,
+  makeMapStateToProps,
   mapDispatchToProps
 )(TaxonDrawer)
