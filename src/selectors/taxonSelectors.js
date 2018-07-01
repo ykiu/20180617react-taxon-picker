@@ -2,6 +2,7 @@ import {createSelector} from 'reselect';
 
 import {List} from 'immutable';
 
+import makeCreateIndex from './indexCreators'
 import createIndex from '../indexCreator';
 
 function getSearchText(state, props) {
@@ -17,9 +18,8 @@ function getCommonNames(state, props) {
 
 export default function makeFilterTaxaBySearchText() {
   return createSelector(
-    [getSearchText, getTaxa, getCommonNames],
-    (searchText, taxa, commonNames) => {
-      const commonNamesByNames = createIndex(commonNames, 'name');
+    [getSearchText, getTaxa, makeCreateIndex(getCommonNames, 'name')],
+    (searchText, taxa, commonNamesByNames) => {
       const matchedCommonNames = commonNamesByNames.get(searchText, List())
       if (matchedCommonNames.count() === 0) {
         return taxa;
