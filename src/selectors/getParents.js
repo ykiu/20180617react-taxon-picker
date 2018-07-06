@@ -14,7 +14,6 @@ export default function makeGetParents() {
     getTaxa,
     getMatchedTaxa,
     (taxa, taxonSubsetByIDs) => {
-      console.log('getParents()')
       /**@type {Stack} */
       let taxonIDStack = taxonSubsetByIDs.toStack();
       return Map().withMutations(resultTaxaByIDs => {

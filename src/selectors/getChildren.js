@@ -15,7 +15,6 @@ export default function makeGetChildren() {
     getMatched,
     getChildTaxaByParentIDs,
     (taxonSubsetByIDs, childTaxaByParentIDs) => {
-      console.log('getChildren()')
       /**@type {Stack} */
       let taxonStack = taxonSubsetByIDs.toStack();
       return Map().withMutations(resultTaxaByIDs => {
