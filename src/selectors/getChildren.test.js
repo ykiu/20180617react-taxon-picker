@@ -1,5 +1,4 @@
 import {fromJS} from 'immutable';
-import makeCreateIndex from './createIndex';
 import makeGetChildren from './getChildren';
 
 
@@ -35,9 +34,11 @@ describe('getChildren()', () => {
         'parent': '1234',
       },
     };
-    const createIndex = makeCreateIndex(() => allTaxaByIDs, 'parent');
-    const getChildren = makeGetChildren();
-    const actualChildTaxaByID = getChildren(null, {matchedTaxa: subsetTaxaByIDs, childTaxaByParentIDs: createIndex()});
+    const getChildren = makeGetChildren(
+      () => allTaxaByIDs,
+      () => subsetTaxaByIDs,
+    );
+    const actualChildTaxaByID = getChildren();
     expect(actualChildTaxaByID.toJS()).toEqual(expectedChildTaxaByIDs);
   });
 });

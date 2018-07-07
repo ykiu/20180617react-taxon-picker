@@ -7,9 +7,6 @@ import ExpandLess from '@material-ui/icons/ExpandLess'
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-
-import createIndex from '../indexCreator';
-
 class EditableTaxonList extends Component {
   constructor(props) {
     super(props);

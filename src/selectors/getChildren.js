@@ -1,19 +1,12 @@
 import {createSelector} from 'reselect';
+import makeCreateIndex from './createIndex';
 
 import {List, Map, Stack} from 'immutable';
 
-function getMatched(state, props) {
-  return props.matchedTaxa;
-}
-
-function getChildTaxaByParentIDs(state, props) {
-  return props.childTaxaByParentIDs
-}
-
-export default function makeGetChildren() {
+export default function makeGetChildren(getTaxa, getOriginalTaxa) {
   return createSelector(
-    getMatched,
-    getChildTaxaByParentIDs,
+    getOriginalTaxa,
+    makeCreateIndex(getTaxa, 'parent'),
     (taxonSubsetByIDs, childTaxaByParentIDs) => {
       /**@type {Stack} */
       let taxonStack = taxonSubsetByIDs.toStack();

@@ -2,31 +2,24 @@ import {Map, Stack} from 'immutable';
 
 import {createSelector} from 'reselect';
 
-function getTaxa(state, props) {
-  return state.get('taxa');
-}
-function getMatchedTaxa(state, props) {
-  return props.matchedTaxa;
-}
-
-export default function makeGetParents() {
+export default function makeGetParents(getTaxa, getOriginalTaxa) {
   return createSelector(
     getTaxa,
-    getMatchedTaxa,
-    (taxa, taxonSubsetByIDs) => {
+    getOriginalTaxa,
+    (taxa, originalTaxaByIDs) => {
       /**@type {Stack} */
-      let taxonIDStack = taxonSubsetByIDs.toStack();
+      let taxonStack = originalTaxaByIDs.toStack();
       return Map().withMutations(resultTaxaByIDs => {
-        while (taxonIDStack.count()) {
-          const currentTaxon = taxonIDStack.peek();
-          taxonIDStack = taxonIDStack.pop();
+        while (taxonStack.count()) {
+          const currentTaxon = taxonStack.peek();
+          taxonStack = taxonStack.pop();
           resultTaxaByIDs = resultTaxaByIDs.set(currentTaxon.get('id'), currentTaxon);
           const parentTaxon = taxa.get(currentTaxon.get('parent'), null);
           if (parentTaxon !== null) {
-            taxonIDStack = taxonIDStack.push(parentTaxon);
+            taxonStack = taxonStack.push(parentTaxon);
           }
         }
-        return resultTaxaByIDs;    
+        return resultTaxaByIDs;
       })
     }
   );

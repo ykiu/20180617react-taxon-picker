@@ -46,7 +46,11 @@ describe('addSiblingTaxa()', () => {
       matchedTaxa: fromJS(filteredTaxa),
       childTaxaByParentIDs: createIndex(),
     }
-    const addSiblingTaxa = makeAddSiblingTaxa();
+    const addSiblingTaxa = makeAddSiblingTaxa(
+      () => fromJS(filteredTaxa),
+      () => fromJS(taxaByIDs),
+      () => createIndex(),
+    );
     const actual = addSiblingTaxa(state, props);
     expect(actual.toJS()).toEqual(filteredTaxaPlusSiblings);
   });

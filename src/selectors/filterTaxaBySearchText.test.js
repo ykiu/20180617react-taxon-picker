@@ -39,8 +39,12 @@ describe('filterTaxaBySearchText()', () => {
       'commonNames': commonNamesByIDs,
       'taxa': taxaByIDs
     });
-    const filterTaxaBySearchText = makeFilterTaxaBySearchText();
-    const actual = filterTaxaBySearchText(state, {searchText: 'foo'});
+    const filterTaxaBySearchText = makeFilterTaxaBySearchText(
+      () => 'foo',
+      () => fromJS(taxaByIDs),
+      () => fromJS(commonNamesByIDs)
+    );
+    const actual = filterTaxaBySearchText();
     expect(actual.toJS()).toEqual({'1234': taxaByIDs['1234']});
   });
 });
