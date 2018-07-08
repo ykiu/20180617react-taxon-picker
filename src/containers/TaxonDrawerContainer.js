@@ -4,11 +4,11 @@ import makeCreateIndex from '../selectors/createIndex'
 
 
 function makeMapStateToProps() {
-  const createIndexOnCommonNamesByTaxonIDs = makeCreateIndex(state => state.get('commonNames'), 'taxon');
+  const createIndexOnCommonNamesByTaxonIDs = makeCreateIndex(state => state.get('personalCommonNames'), 'taxon');
   return function mapStateToProps(state, props) {
     return {
       ...props,
-      commonNames: state.get('commonNames'),
+      commonNames: state.get('personalCommonNames'),
       selectedTaxonID: props.selectedTaxonID,
       tabIndex: 0,
       role: 'button',

@@ -4,7 +4,10 @@ import commonNames from './commonNames';
 import scientificNames from './scientificNames';
 
 export default combineReducers({
-  taxa,
-  commonNames,
-  scientificNames
+  personalTaxa: taxa,
+  personalCommonNames: commonNames,
+  personalScientificNames: scientificNames,
+  referentialTaxa: taxa,
+  referentialCommonNames: commonNames,
+  referentialScientificNames: scientificNames,
 });
