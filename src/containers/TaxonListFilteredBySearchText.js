@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import makeFilterTaxaBySearchText from '../selectors/filterTaxaBySearchText'
 import makeCreateIndex from '../selectors/createIndex'
 import makeAddSiblingTaxa from '../selectors/addSiblingTaxa'
-import { compose } from '../../node_modules/redux';
 
 const MODEL_NAMES_BY_TAXON_TYPES = {
   personal: {
