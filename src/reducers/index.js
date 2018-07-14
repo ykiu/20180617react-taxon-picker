@@ -7,10 +7,10 @@ import referentialCommonNames from './referentialCommonNames';
 import referentialScientificNames from './referentialScientificNames';
 
 export default combineReducers({
-  personalTaxa: personalTaxa,
-  personalCommonNames: personalCommonNames,
-  personalScientificNames: personalScientificNames,
-  referentialTaxa: referentialTaxa,
-  referentialCommonNames: referentialCommonNames,
-  referentialScientificNames: referentialScientificNames,
+  personalTaxa,
+  personalCommonNames,
+  personalScientificNames,
+  referentialTaxa,
+  referentialCommonNames,
+  referentialScientificNames,
 });
