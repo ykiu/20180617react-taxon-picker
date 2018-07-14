@@ -1,27 +1,41 @@
+import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import makeFilterTaxaBySearchText from '../selectors/filterTaxaBySearchText'
 import makeCreateIndex from '../selectors/createIndex'
-import TaxonListAndImportPrompt from '../components/TaxonListAndImportPrompt'
 import makeAddSiblingTaxa from '../selectors/addSiblingTaxa'
+import { compose } from '../../node_modules/redux';
 
+const MODEL_NAMES_BY_TAXON_TYPES = {
+  personal: {
+    taxonModelName: 'personalTaxa',
+    commonNameModelName: 'personalCommonNames',
+    scientificNameModelName: 'personalScientificNames',
+  },
+  referential: {
+    taxonModelName: 'referentialTaxa',
+    commonNameModelName: 'referentialCommonNames',
+    scientificNameModelName: 'referentialScientificNames',
+  }
+}
 
-function makeMapStateToProps() {
+function makeMapStateToProps(state, props) {
+  const {taxonModelName, commonNameModelName, scientificNameModelName} = MODEL_NAMES_BY_TAXON_TYPES[props.taxonType]
   const filterTaxaBySearchText = makeFilterTaxaBySearchText(
     (_, props) => props.searchText,
-    state => state.get('personalTaxa'),
-    state => state.get('personalCommonNames')
+    state => state.get(taxonModelName),
+    state => state.get(commonNameModelName)
   );
   const createIndexOnTaxaByParents = makeCreateIndex(taxa => taxa, 'parent');
-  const createIndexOnCommonNamesByTaxonIDs = makeCreateIndex(state => state.get('personalCommonNames'), 'taxon');
-  const createIndexOnScientificNamesByTaxonIDs = makeCreateIndex(state => state.get('personalScientificNames'), 'taxon');
+  const createIndexOnCommonNamesByTaxonIDs = makeCreateIndex(state => state.get(commonNameModelName), 'taxon');
+  const createIndexOnScientificNamesByTaxonIDs = makeCreateIndex(state => state.get(scientificNameModelName), 'taxon');
   const addSiblingTaxa = makeAddSiblingTaxa(
     (_, filteredTaxa) => filteredTaxa,
-    state => state.get('personalTaxa'),
+    state => state.get(taxonModelName),
   );
   return function mapStateToProps(state, props) {
     let taxa;
     if (props.searchText === '') {
-      taxa = state.get('personalTaxa');
+      taxa = state.get(taxonModelName);
     } else {
       const filteredTaxa = filterTaxaBySearchText(state, props);
       taxa = addSiblingTaxa(state, filteredTaxa);
@@ -37,7 +51,19 @@ function makeMapStateToProps() {
 
 const mapDispatchToProps = dispatch => Object();
 
-export default connect(
-  makeMapStateToProps,
-  mapDispatchToProps
-)(TaxonListAndImportPrompt)
+export default class Container extends Component {
+  constructor(props){
+    super(props)
+    this.container = connect(
+      makeMapStateToProps,
+      mapDispatchToProps
+    )(props.childType);
+  }
+  render(){
+    return (
+      <this.container
+        {...this.props}
+      />
+    )
+  }
+}

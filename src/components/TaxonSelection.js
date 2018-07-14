@@ -1,3 +1,5 @@
+import {Set} from 'immutable'
+
 import React, { Component } from 'react';
 
 import Drawer from '@material-ui/core/Drawer';
@@ -5,7 +7,27 @@ import Drawer from '@material-ui/core/Drawer';
 import TaxonDrawerContainer from '../containers/TaxonDrawerContainer';
 import TaxonListFilteredBySearchText from '../containers/TaxonListFilteredBySearchText';
 import TaxonSearch from './TaxonSearch';
+import TaxonListAndImportPrompt from './TaxonListAndImportPrompt'
+import EditableTaxonList from './EditableTaxonList'
 
+const VIEW_TYPES = {
+  SELECT_VIEW: 'SELECT_VIEW',
+  IMPORT_VIEW: 'IMPORT_VIEW',
+}
+
+function SelectView(props) {
+  return (
+    props.viewType === VIEW_TYPES.SELECT_VIEW?
+    props.children: null
+  )
+}
+
+function ImportView(props) {
+  return (
+    props.viewType === VIEW_TYPES.IMPORT_VIEW?
+    props.children: null
+  )
+}
 
 class TaxonSelection extends Component {
   constructor(props) {
@@ -13,7 +35,9 @@ class TaxonSelection extends Component {
     this.state = {
       isTaxonDrawerOpen: false,
       searchText: '',
-      selectedTaxonID: null
+      selectedTaxonID: null,
+      viewType: VIEW_TYPES.SELECT_VIEW,
+      selectedReferentialTaxonIDs: Set()
     };
   }
 
@@ -37,14 +61,48 @@ class TaxonSelection extends Component {
     })
   }
 
+  handleImportButtonClick() {
+    this.setState({
+      viewType: VIEW_TYPES.IMPORT_VIEW
+    })
+  }
+
+  handleReferentialTaxonSelect(nodeID) {
+    const selectedTaxonIDs = this.state.selectedReferentialTaxonIDs;
+    let newSelectedTaxonIDs;
+    if (selectedTaxonIDs.has(nodeID)) {
+      newSelectedTaxonIDs = selectedTaxonIDs.remove(nodeID);
+    } else {
+      newSelectedTaxonIDs = selectedTaxonIDs.add(nodeID);
+    }
+    this.setState({
+      selectedReferentialTaxonIDs: newSelectedTaxonIDs
+    });
+  }
+
   render() {
     return (
       <div>
         <TaxonSearch onSearchFieldChange={this.handleSearchFieldChange.bind(this)} />
-        <TaxonListFilteredBySearchText
-          searchText={this.state.searchText}
-          onItemSelect={this.handleItemSelect.bind(this)}
-        />
+        <SelectView viewType={this.state.viewType}>
+          <TaxonListFilteredBySearchText
+            searchText={this.state.searchText}
+            onItemSelect={this.handleItemSelect.bind(this)}
+            onImportButtonClick={this.handleImportButtonClick.bind(this)}
+            childType={TaxonListAndImportPrompt}
+            taxonType='personal'
+          />
+        </SelectView>
+        <ImportView viewType={this.state.viewType}>
+          <TaxonListFilteredBySearchText
+            searchText={this.state.searchText}
+            checkedItemIDs={this.state.selectedReferentialTaxonIDs}
+            onItemSelect={this.handleItemSelect.bind(this)}
+            onItemCheck={this.handleReferentialTaxonSelect.bind(this)}
+            childType={EditableTaxonList}
+            taxonType='referential'
+          />
+        </ImportView>
         <Drawer
           open={this.state.isTaxonDrawerOpen}
           onClose={this.handleTaxonDrawerClose.bind(this)}
