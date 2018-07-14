@@ -1,13 +1,16 @@
 import { combineReducers } from 'redux-immutable';
-import taxa from './taxa';
-import commonNames from './commonNames';
-import scientificNames from './scientificNames';
+import personalTaxa from './personalTaxa';
+import personalCommonNames from './personalCommonNames';
+import personalScientificNames from './personalScientificNames';
+import referentialTaxa from './referentialTaxa';
+import referentialCommonNames from './referentialCommonNames';
+import referentialScientificNames from './referentialScientificNames';
 
 export default combineReducers({
-  personalTaxa: taxa,
-  personalCommonNames: commonNames,
-  personalScientificNames: scientificNames,
-  referentialTaxa: taxa,
-  referentialCommonNames: commonNames,
-  referentialScientificNames: scientificNames,
+  personalTaxa: personalTaxa,
+  personalCommonNames: personalCommonNames,
+  personalScientificNames: personalScientificNames,
+  referentialTaxa: referentialTaxa,
+  referentialCommonNames: referentialCommonNames,
+  referentialScientificNames: referentialScientificNames,
 });
