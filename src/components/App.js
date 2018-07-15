@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-import TaxonSelection from '../components/TaxonSelection';
+import TaxonSelectionContainer from '../containers/TaxonSelectionContainer';
 
 class App extends Component {
   render() {
     return (
-      <TaxonSelection />
+      <TaxonSelectionContainer />
     );
   }
 }

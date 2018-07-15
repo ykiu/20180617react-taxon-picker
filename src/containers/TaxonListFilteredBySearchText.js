@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import makeFilterTaxaBySearchText from '../selectors/filterTaxaBySearchText'
 import makeCreateIndex from '../selectors/createIndex'
 import makeAddSiblingTaxa from '../selectors/addSiblingTaxa'
+import getSearchText from '../selectors/getSearchText'
 
 const MODEL_NAMES_BY_TAXON_TYPES = {
   personal: {
@@ -33,7 +34,7 @@ function makeMapStateToProps(state, props) {
   );
   return function mapStateToProps(state, props) {
     let taxa;
-    if (props.searchText === '') {
+    if (getSearchText(state) === '') {
       taxa = state.get(taxonModelName);
     } else {
       const filteredTaxa = filterTaxaBySearchText(state, props);
@@ -41,6 +42,7 @@ function makeMapStateToProps(state, props) {
     }
     return {
       ...props,
+      searchText: getSearchText(state),
       commonNamesByTaxonIDs: createIndexOnCommonNamesByTaxonIDs(state),
       scientificNamesByTaxonIDs: createIndexOnScientificNamesByTaxonIDs(state),
       childTaxaByParentIDs: createIndexOnTaxaByParents(taxa),

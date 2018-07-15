@@ -34,7 +34,6 @@ class TaxonSelection extends Component {
     super(props);
     this.state = {
       isTaxonDrawerOpen: false,
-      searchText: '',
       selectedTaxonID: null,
       viewType: VIEW_TYPES.SELECT_VIEW,
       selectedReferentialTaxonIDs: Set()
@@ -56,28 +55,16 @@ class TaxonSelection extends Component {
 
   handleSearchFieldChange(event) {
     this.setState({
-      searchText: event.target.value,
       isTaxonDrawerOpen: false,
     })
+    this.props.changeSearchText(event.target.value);
   }
 
   handleImportButtonClick() {
     this.setState({
       viewType: VIEW_TYPES.IMPORT_VIEW
     })
-  }
-
-  handleReferentialTaxonSelect(nodeID) {
-    const selectedTaxonIDs = this.state.selectedReferentialTaxonIDs;
-    let newSelectedTaxonIDs;
-    if (selectedTaxonIDs.has(nodeID)) {
-      newSelectedTaxonIDs = selectedTaxonIDs.remove(nodeID);
-    } else {
-      newSelectedTaxonIDs = selectedTaxonIDs.add(nodeID);
-    }
-    this.setState({
-      selectedReferentialTaxonIDs: newSelectedTaxonIDs
-    });
+    this.props.selectAllReferentialTaxa();
   }
 
   render() {
@@ -86,7 +73,6 @@ class TaxonSelection extends Component {
         <TaxonSearch onSearchFieldChange={this.handleSearchFieldChange.bind(this)} />
         <SelectView viewType={this.state.viewType}>
           <TaxonListFilteredBySearchText
-            searchText={this.state.searchText}
             onItemSelect={this.handleItemSelect.bind(this)}
             onImportButtonClick={this.handleImportButtonClick.bind(this)}
             childType={TaxonListAndImportPrompt}
@@ -95,10 +81,9 @@ class TaxonSelection extends Component {
         </SelectView>
         <ImportView viewType={this.state.viewType}>
           <TaxonListFilteredBySearchText
-            searchText={this.state.searchText}
-            checkedItemIDs={this.state.selectedReferentialTaxonIDs}
+            checkedItemIDs={this.props.selectedReferentialTaxonIDs}
             onItemSelect={this.handleItemSelect.bind(this)}
-            onItemCheck={this.handleReferentialTaxonSelect.bind(this)}
+            onItemCheck={this.props.toggleReferentialTaxon}
             childType={EditableTaxonList}
             taxonType='referential'
           />
