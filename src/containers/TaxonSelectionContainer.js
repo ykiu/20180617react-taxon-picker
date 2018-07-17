@@ -1,7 +1,7 @@
 import {
   changeSearchText,
   toggleReferentialTaxon,
-  selectAllReferentialTaxa,
+  selectMultipleReferentialTaxa,
 } from '../actions/ui'
 import { connect } from 'react-redux'
 import TaxonSelection from '../components/TaxonSelection'
@@ -17,7 +17,7 @@ function makeMapStateToProps(state, props) {
 const mapDispatchToProps = dispatch => ({
   changeSearchText: text => dispatch(changeSearchText(text)),
   toggleReferentialTaxon: taxonID => dispatch(toggleReferentialTaxon(taxonID)),
-  selectAllReferentialTaxa: () => dispatch(selectAllReferentialTaxa()),
+  selectMultipleReferentialTaxa: taxonIDs => dispatch(selectMultipleReferentialTaxa(taxonIDs)),
 });
 
 export default this.container = connect(

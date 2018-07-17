@@ -1,7 +1,7 @@
 import {
   CHANGE_SEARCH_TEXT,
   TOGGLE_REFERENTIAL_TAXON,
-  SELECT_ALL_REFERENTIAL_TAXA
+  SELECT_MULTIPLE_REFERENTIAL_TAXA
 } from './types';
 
 export const changeSearchText = text => ({
@@ -14,6 +14,7 @@ export const toggleReferentialTaxon = taxonID => ({
   taxonID
 });
 
-export const selectAllReferentialTaxa= () => ({
-  type: SELECT_ALL_REFERENTIAL_TAXA
+export const selectMultipleReferentialTaxa= (taxonIDs) => ({
+  type: SELECT_MULTIPLE_REFERENTIAL_TAXA,
+  taxonIDs
 })

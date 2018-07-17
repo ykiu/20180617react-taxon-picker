@@ -1,7 +1,7 @@
 import {Set} from 'immutable';
 import {
   TOGGLE_REFERENTIAL_TAXON,
-  SELECT_ALL_REFERENTIAL_TAXA,
+  SELECT_MULTIPLE_REFERENTIAL_TAXA,
 } from '../actions/types'
 
 export default function(state=Set(), action){
@@ -12,8 +12,8 @@ export default function(state=Set(), action){
       } else {
         return state.add(action.taxonID);
       }
-    case SELECT_ALL_REFERENTIAL_TAXA:
-      return state;
+    case SELECT_MULTIPLE_REFERENTIAL_TAXA:
+      return state.union(action.taxonIDs)
     default:
       return state;
   }

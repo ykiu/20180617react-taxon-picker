@@ -19,15 +19,13 @@ const MODEL_NAMES_BY_TAXON_TYPES = {
 }
 
 function makeMapStateToProps(state, props) {
-  const {taxonModelName, commonNameModelName, scientificNameModelName} = MODEL_NAMES_BY_TAXON_TYPES[props.taxonType]
+  const {taxonModelName, commonNameModelName} = MODEL_NAMES_BY_TAXON_TYPES[props.taxonType]
   const filterTaxaBySearchText = makeFilterTaxaBySearchText(
-    (_, props) => props.searchText,
+    getSearchText,
     state => state.get(taxonModelName),
     state => state.get(commonNameModelName)
   );
   const createIndexOnTaxaByParents = makeCreateIndex(taxa => taxa, 'parent');
-  const createIndexOnCommonNamesByTaxonIDs = makeCreateIndex(state => state.get(commonNameModelName), 'taxon');
-  const createIndexOnScientificNamesByTaxonIDs = makeCreateIndex(state => state.get(scientificNameModelName), 'taxon');
   const addSiblingTaxa = makeAddSiblingTaxa(
     (_, filteredTaxa) => filteredTaxa,
     state => state.get(taxonModelName),
@@ -43,22 +41,17 @@ function makeMapStateToProps(state, props) {
     return {
       ...props,
       searchText: getSearchText(state),
-      commonNamesByTaxonIDs: createIndexOnCommonNamesByTaxonIDs(state),
-      scientificNamesByTaxonIDs: createIndexOnScientificNamesByTaxonIDs(state),
       childTaxaByParentIDs: createIndexOnTaxaByParents(taxa),
     }
   }
 }
-
-const mapDispatchToProps = dispatch => Object();
 
 export default class Container extends Component {
   constructor(props){
     super(props)
     this.container = connect(
       makeMapStateToProps,
-      mapDispatchToProps
-    )(props.childType);
+    )(props.children);
   }
   render(){
     return (
