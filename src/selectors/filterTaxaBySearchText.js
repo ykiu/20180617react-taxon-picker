@@ -8,6 +8,9 @@ export default function makeFilterTaxaBySearchText(getSearchText, getTaxa, getCo
   return createSelector(
     [getSearchText, getTaxa, makeCreateIndex(getCommonNames, 'name')],
     (searchText, taxa, commonNamesByNames) => {
+      if (searchText === '') {
+        return taxa;
+      }
       const matchedCommonNames = commonNamesByNames.get(searchText, List())
       /**@type {List} */
       const matchedTaxonIDs = matchedCommonNames.map(x => x.get('taxon'));

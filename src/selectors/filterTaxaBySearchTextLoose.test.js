@@ -1,10 +1,10 @@
 import {fromJS} from 'immutable';
-import makeFilterTaxaBySearchText from './filterTaxaBySearchText';
+import makeFilterTaxaBySearchText from './filterTaxaBySearchTextLoose';
 
 
 describe('filterTaxaBySearchText()', () => {
-  it('returns those taxa with names that match the given search text ' +
-     '(their ancestors and decendants are ignored).', () => {
+  it('returns those taxa returned by filterTaxaBySearchText() ' +
+     'but also their decendants and ancestors.', () => {
     const taxaByIDs = {
       '1234': {
         'id': '1234',
@@ -16,6 +16,10 @@ describe('filterTaxaBySearchText()', () => {
       },
       '3456': {
         'id': '3456',
+        'parent': '2345',
+      },
+      '4567': {
+        'id': '4567',
         'parent': null,
       },
     };
@@ -35,40 +39,10 @@ describe('filterTaxaBySearchText()', () => {
         'name': 'baz',
         'taxon': '3456',
       },
-    };
-    const state = fromJS({
-      'commonNames': commonNamesByIDs,
-      'taxa': taxaByIDs
-    });
-    const filterTaxaBySearchText = makeFilterTaxaBySearchText(
-      () => 'foo',
-      () => fromJS(taxaByIDs),
-      () => fromJS(commonNamesByIDs)
-    );
-    const actual = filterTaxaBySearchText();
-    expect(actual.toJS()).toEqual({'1234': taxaByIDs['1234']});
-  });
-  it('returns the given taxa as is if the search text is empty.', () => {
-    const taxaByIDs = {
-      '1234': {
-        'id': '1234',
-        'parent': null,
-      },
-      '2345': {
-        'id': '2345',
-        'parent': '1234',
-      },
-    };
-    const commonNamesByIDs = {
-      'abcd': {
-        'id': 'abcd',
-        'name': 'foo',
-        'taxon': '1234',
-      },
-      'bcde': {
-        'id': 'bcde',
-        'name': 'bar',
-        'taxon': '2345',
+      'defg': {
+        'id': 'defg',
+        'name': 'qux',
+        'taxon': '4567',
       },
     };
     const state = fromJS({
@@ -76,7 +50,7 @@ describe('filterTaxaBySearchText()', () => {
       'taxa': taxaByIDs
     });
     const filterTaxaBySearchText = makeFilterTaxaBySearchText(
-      () => '',
+      () => 'bar',
       () => fromJS(taxaByIDs),
       () => fromJS(commonNamesByIDs)
     );
@@ -84,6 +58,7 @@ describe('filterTaxaBySearchText()', () => {
     expect(actual.toJS()).toEqual({
       '1234': taxaByIDs['1234'],
       '2345': taxaByIDs['2345'],
+      '3456': taxaByIDs['3456'],
     });
   });
 });
