@@ -1,4 +1,4 @@
-import {Set, Map, List} from 'immutable'
+import {Set} from 'immutable'
 
 import React, { Component } from 'react';
 
@@ -6,7 +6,6 @@ import Drawer from '@material-ui/core/Drawer';
 
 import TaxonDrawerContainer from '../containers/TaxonDrawerContainer';
 import TaxonListFilteredBySearchText from '../containers/TaxonListFilteredBySearchText';
-import WithIndex from '../containers/WithIndex';
 import TaxonSearch from './TaxonSearch';
 import TaxonListAndImportPrompt from './TaxonListAndImportPrompt'
 import EditableTaxonList from './EditableTaxonList'
@@ -65,28 +64,7 @@ class TaxonSelection extends Component {
     this.setState({
       viewType: VIEW_TYPES.IMPORT_VIEW
     })
-
-    /**@type {Array<Map>} */
-    let nodeStack = this.props.referentialChildTaxaByParentIDs.get(null, List()).toArray();
-    const IDs = [];
-
-    while (nodeStack.length) {
-      const currentNode = nodeStack.pop();
-      const currentNodeID = currentNode.get('id')
-      const childNode = this.props.referentialChildTaxaByParentIDs.getIn([currentNodeID, 0]);
-      const referentialCommonNames = this.props.referentialCommonNamesByTaxonIDs.get(currentNodeID).map(obj => obj.get('name'));
-      const isExisting = (Set(this.props.personalCommonNamesByNames.keySeq()).intersect(referentialCommonNames.toSet()).count()) !== 0;
-
-      if (!isExisting) {
-        IDs.push(currentNodeID)
-      }
-
-      if (childNode !== undefined) {
-        nodeStack.push(childNode);
-      }
-    }
-
-    this.props.selectMultipleReferentialTaxa(IDs);
+    this.props.selectRelevantReferentialTaxa();
   }
 
   render() {
