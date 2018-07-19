@@ -35,7 +35,6 @@ class TaxonSelection extends Component {
       isTaxonDrawerOpen: false,
       selectedTaxonID: null,
       viewType: VIEW_TYPES.SELECT_VIEW,
-      selectedReferentialTaxonIDs: Set()
     };
   }
 
