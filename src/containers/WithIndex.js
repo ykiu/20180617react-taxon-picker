@@ -1,3 +1,11 @@
+// This container simply maps index creator instances to its child component.
+
+// Whenever possible, use this wrapper component instead of directly
+// passing index creator instances as a prop, because
+// this component makes it possible to share the same instance
+// of an index creator for the same model, minimizing the need for
+// recalculation.
+
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import makeCreateIndex from '../selectors/createIndex'

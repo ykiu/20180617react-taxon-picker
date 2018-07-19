@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import WithIndex from '../containers/WithIndex';
 import TaxonSelectionContainer from '../containers/TaxonSelectionContainer';
-import TaxonListFilteredBySearchText from '../containers/TaxonListFilteredBySearchText';
+import makeCreateIndex from '../selectors/createIndex'
 
 class App extends Component {
   render() {
@@ -16,14 +16,9 @@ class App extends Component {
         'referentialScientificNamesByTaxonIDs',
       ]}>
         {props => (
-          <TaxonListFilteredBySearchText taxonType='referential' {...props}>
-            {props => (
-              <TaxonSelectionContainer
-                {...props}
-                referentialChildTaxaByParentIDs={props.childTaxaByParentIDs}
-              />
-            )}
-          </TaxonListFilteredBySearchText>
+          <TaxonSelectionContainer
+            {...props}
+          />
         )}
       </WithIndex>
     );

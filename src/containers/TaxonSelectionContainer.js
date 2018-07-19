@@ -1,3 +1,4 @@
+import { connect } from 'react-redux'
 import {Set, Map, List} from 'immutable'
 
 import {
@@ -5,7 +6,10 @@ import {
   toggleReferentialTaxon,
   selectMultipleReferentialTaxa,
 } from '../actions/ui'
-import { connect } from 'react-redux'
+import makeCreateIndex from '../selectors/createIndex'
+import makeFilterTaxaBySearchTextLoose from '../selectors/filterTaxaBySearchTextLoose'
+import getSearchText from '../selectors/getSearchText'
+
 import TaxonSelection from '../components/TaxonSelection'
 
 function selectRelevantReferentialTaxa(props) {
@@ -32,22 +36,47 @@ function selectRelevantReferentialTaxa(props) {
 }
 
 
-function makeMapStateToProps(state, props) {
-  return {
-    ...props,
-    searchText: state.getIn(['ui', 'taxonSelection', 'searchText']),
-    selectedReferentialTaxonIDs: state.getIn(['ui', 'taxonSelection', 'selectedReferentialTaxonIDs']),
+function makeMapStateToProps() {
+  // prepare memoized selectors related to refernetial taxa
+  const getReferentialTaxa = state => state.get('referentialTaxa');
+  const getReferentialCommonNames = state => state.get('referentialCommonNames');
+  const filterReferentialTaxa = makeFilterTaxaBySearchTextLoose(
+    getSearchText, getReferentialTaxa, getReferentialCommonNames)
+  const createIndexOnReferentialTaxaByParentIDs = makeCreateIndex(taxa => taxa, 'parent');
+
+  // prepare memoized selectors related to personal taxa
+  const getPersonalTaxa = state => state.get('personalTaxa');
+  const getPersonalCommonNames = state => state.get('personalCommonNames');
+  const filterPersonalTaxa = makeFilterTaxaBySearchTextLoose(
+    getSearchText, getPersonalTaxa, getPersonalCommonNames)
+  const createIndexOnPersonalTaxaByParentIDs = makeCreateIndex(taxa => taxa, 'parent');
+
+  // keep in mind that sharing a single selector instance for multiple models
+  // breaks memoization because of the cache size being 1.
+  
+  return function(state, props) {
+    return {
+      ...props,
+      referentialChildTaxaByParentIDs: createIndexOnReferentialTaxaByParentIDs(filterReferentialTaxa(state, props)),
+      personalChildTaxaByParentIDs: createIndexOnPersonalTaxaByParentIDs(filterPersonalTaxa(state, props)),
+      searchText: state.getIn(['ui', 'taxonSelection', 'searchText']),
+      selectedReferentialTaxonIDs: state.getIn(['ui', 'taxonSelection', 'selectedReferentialTaxonIDs']),
+    }
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch) => ({
   changeSearchText: text => dispatch(changeSearchText(text)),
   toggleReferentialTaxon: taxonID => dispatch(toggleReferentialTaxon(taxonID)),
   selectMultipleReferentialTaxa: taxonIDs => dispatch(selectMultipleReferentialTaxa(taxonIDs)),
-  selectRelevantReferentialTaxa: () => dispatch(selectRelevantReferentialTaxa(ownProps))
-});
+})
 
-export default this.container = connect(
-  makeMapStateToProps,
-  mapDispatchToProps
-)(TaxonSelection)
+const mapDispatchToProps2 = (dispatch, ownProps) => ({
+  ...ownProps,
+  selectRelevantReferentialTaxa: () => dispatch(selectRelevantReferentialTaxa(ownProps))
+})
+
+
+export default
+connect(makeMapStateToProps, mapDispatchToProps)(
+  connect(null, mapDispatchToProps2)(TaxonSelection))

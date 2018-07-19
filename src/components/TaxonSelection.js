@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import Drawer from '@material-ui/core/Drawer';
 
 import TaxonDrawerContainer from '../containers/TaxonDrawerContainer';
-import TaxonListFilteredBySearchText from '../containers/TaxonListFilteredBySearchText';
 import TaxonSearch from './TaxonSearch';
 import TaxonListAndImportPrompt from './TaxonListAndImportPrompt'
 import EditableTaxonList from './EditableTaxonList'
@@ -72,35 +71,24 @@ class TaxonSelection extends Component {
       <div>
         <TaxonSearch onSearchFieldChange={this.handleSearchFieldChange.bind(this)} />
         <SelectView viewType={this.state.viewType}>
-          <TaxonListFilteredBySearchText
-            taxonType='personal'
+          <TaxonListAndImportPrompt
+            searchText={this.props.searchText}
+            childTaxaByParentIDs={this.props.personalChildTaxaByParentIDs}
             commonNamesByTaxonIDs={this.props.personalCommonNamesByTaxonIDs}
             scientificNamesByTaxonIDs={this.props.personalScientificNamesByTaxonIDs}
             onItemSelect={this.handleItemSelect.bind(this)}
             onImportButtonClick={this.handleImportButtonClick.bind(this)}
-          >
-            {props => (
-              <TaxonListAndImportPrompt
-                {...props}
-              />
-            )}
-          </TaxonListFilteredBySearchText>
+          />
         </SelectView>
         <ImportView viewType={this.state.viewType}>
-          <TaxonListFilteredBySearchText
-            taxonType='referential'
+          <EditableTaxonList
+            onItemSelect={this.handleItemSelect.bind(this)}
+            onItemCheck={this.props.toggleReferentialTaxon}
+            childTaxaByParentIDs={this.props.referentialChildTaxaByParentIDs}
             commonNamesByTaxonIDs={this.props.referentialCommonNamesByTaxonIDs}
             scientificNamesByTaxonIDs={this.props.referentialScientificNamesByTaxonIDs}
             checkedItemIDs={this.props.selectedReferentialTaxonIDs}
-            onItemSelect={this.handleItemSelect.bind(this)}
-            onItemCheck={this.props.toggleReferentialTaxon}
-          >
-            {props => (
-              <EditableTaxonList
-                {...props}
-              />
-            )}
-          </TaxonListFilteredBySearchText>
+          />
         </ImportView>
         <Drawer
           open={this.state.isTaxonDrawerOpen}
