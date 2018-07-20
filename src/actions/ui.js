@@ -1,7 +1,7 @@
 import {
   CHANGE_SEARCH_TEXT,
-  TOGGLE_REFERENTIAL_TAXON,
-  SELECT_MULTIPLE_REFERENTIAL_TAXA
+  TOGGLE_REFERENTIAL_TAXON_SELECTION,
+  ACTIVATE_REFERENTIAL_TAXON_SELECTION_IN_BULK
 } from './types';
 
 export const changeSearchText = text => ({
@@ -9,12 +9,12 @@ export const changeSearchText = text => ({
   text
 });
 
-export const toggleReferentialTaxon = taxonID => ({
-  type: TOGGLE_REFERENTIAL_TAXON,
+export const toggleReferentialTaxonSelection = taxonID => ({
+  type: TOGGLE_REFERENTIAL_TAXON_SELECTION,
   taxonID
 });
 
-export const selectMultipleReferentialTaxa= (taxonIDs) => ({
-  type: SELECT_MULTIPLE_REFERENTIAL_TAXA,
+export const activateReferentialTaxonSelectionInBulk= (taxonIDs) => ({
+  type: ACTIVATE_REFERENTIAL_TAXON_SELECTION_IN_BULK,
   taxonIDs
 })

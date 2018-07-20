@@ -3,8 +3,8 @@ import {Set, Map, List} from 'immutable'
 
 import {
   changeSearchText,
-  toggleReferentialTaxon,
-  selectMultipleReferentialTaxa,
+  toggleReferentialTaxonSelection,
+  activateReferentialTaxonSelectionInBulk,
 } from '../actions/ui'
 import makeCreateIndex from '../selectors/createIndex'
 import makeFilterTaxaBySearchTextLoose from '../selectors/filterTaxaBySearchTextLoose'
@@ -32,7 +32,7 @@ function selectRelevantReferentialTaxa(props) {
     }
   }
 
-  return selectMultipleReferentialTaxa(IDs);
+  return activateReferentialTaxonSelectionInBulk(IDs);
 }
 
 
@@ -67,8 +67,7 @@ function makeMapStateToProps() {
 
 const mapDispatchToProps = (dispatch) => ({
   changeSearchText: text => dispatch(changeSearchText(text)),
-  toggleReferentialTaxon: taxonID => dispatch(toggleReferentialTaxon(taxonID)),
-  selectMultipleReferentialTaxa: taxonIDs => dispatch(selectMultipleReferentialTaxa(taxonIDs)),
+  toggleReferentialTaxonSelection: taxonID => dispatch(toggleReferentialTaxonSelection(taxonID)),
 })
 
 const mapDispatchToProps2 = (dispatch, ownProps) => ({

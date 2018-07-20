@@ -82,7 +82,7 @@ class TaxonSelection extends Component {
         <ImportView viewType={this.state.viewType}>
           <EditableTaxonList
             onItemSelect={this.handleItemSelect.bind(this)}
-            onItemCheck={this.props.toggleReferentialTaxon}
+            onItemCheck={this.props.toggleReferentialTaxonSelection}
             childTaxaByParentIDs={this.props.referentialChildTaxaByParentIDs}
             commonNamesByTaxonIDs={this.props.referentialCommonNamesByTaxonIDs}
             scientificNamesByTaxonIDs={this.props.referentialScientificNamesByTaxonIDs}
