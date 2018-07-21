@@ -13,6 +13,8 @@ class TaxonListAndImportPrompt extends Component {
             childTaxaByParentIDs={this.props.childTaxaByParentIDs}
             commonNamesByTaxonIDs={this.props.commonNamesByTaxonIDs}
             scientificNamesByTaxonIDs={this.props.scientificNamesByTaxonIDs}
+            expandedItemIDs={this.props.expandedItemIDs}
+            toggleItemExpansion={this.props.toggleItemExpansion}
           />
         ):
         (

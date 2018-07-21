@@ -23,23 +23,8 @@ class EditableTaxonList extends Component {
     };
   }
 
-  toggleNode(nodeID) {
-    const childNodesByParentIDs = this.props.childTaxaByParentIDs;
-    const openNodeIDs = this.state.openNodeIDs;
-    if (this.state.openNodeIDs.has(nodeID)) {
-      const childNodeIDs = childNodesByParentIDs
-        .get(nodeID, List())
-        .map(node => node.get('id'));
-      this.setState({openNodeIDs: openNodeIDs.filterNot(
-        x => (x === nodeID) || childNodeIDs.includes(x)
-      )});
-    } else {
-      this.setState({openNodeIDs: openNodeIDs.add(nodeID)});
-    }
-  }
-
   handleItemClick(nodeID) {
-    this.toggleNode(nodeID);
+    this.props.toggleItemExpansion(nodeID);
     this.props.onItemSelect(nodeID);
   }
 
@@ -63,7 +48,7 @@ class EditableTaxonList extends Component {
       const currentNode = nodeStack.pop();
       const currentNodeID = currentNode.get('id')
 
-      if (this.state.openNodeIDs.has(currentNodeID)) {
+      if (this.props.expandedItemIDs.has(currentNodeID)) {
         const childNodes = childNodesByParentIDs.get(currentNodeID, List());
         Array.prototype.push.apply(nodeStack, childNodes.toArray());
       }

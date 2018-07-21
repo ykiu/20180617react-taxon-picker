@@ -5,6 +5,10 @@ import {
   changeSearchText,
   toggleReferentialTaxonSelection,
   activateReferentialTaxonSelectionInBulk,
+  toggleReferentialTaxonExpansion,
+  togglePersonalTaxonExpansion,
+  performReferentialTaxonExpansionInBulk,
+  performPersonalTaxonExpansionInBulk,
 } from '../actions/ui'
 import makeCreateIndex from '../selectors/createIndex'
 import makeFilterTaxaBySearchTextLoose from '../selectors/filterTaxaBySearchTextLoose'
@@ -14,7 +18,7 @@ import TaxonSelection from '../components/TaxonSelection'
 
 function selectRelevantReferentialTaxa(props) {
   /**@type {Array<Map>} */
-  let nodeStack = props.referentialChildTaxaByParentIDs.get(null, List()).toArray();
+  const nodeStack = props.referentialChildTaxaByParentIDs.get(null, List()).toArray();
   const IDs = [];
 
   while (nodeStack.length) {
@@ -52,7 +56,7 @@ function makeMapStateToProps() {
   const createIndexOnPersonalTaxaByParentIDs = makeCreateIndex(taxa => taxa, 'parent');
 
   // keep in mind that sharing a single selector instance for multiple models
-  // breaks memoization because of the cache size being 1.
+  // can break memoization because of the cache size being 1.
   
   return function(state, props) {
     return {
@@ -68,14 +72,18 @@ function makeMapStateToProps() {
 const mapDispatchToProps = (dispatch) => ({
   changeSearchText: text => dispatch(changeSearchText(text)),
   toggleReferentialTaxonSelection: taxonID => dispatch(toggleReferentialTaxonSelection(taxonID)),
+  toggleReferentialTaxonExpansion: taxonID => dispatch(toggleReferentialTaxonExpansion(taxonID)),
+  togglePersonalTaxonExpansion: taxonID => dispatch(togglePersonalTaxonExpansion(taxonID)),
 })
 
-const mapDispatchToProps2 = (dispatch, ownProps) => ({
+const mapDispatchToPropsWithOwnProps = (dispatch, ownProps) => ({
   ...ownProps,
-  selectRelevantReferentialTaxa: () => dispatch(selectRelevantReferentialTaxa(ownProps))
+  selectRelevantReferentialTaxa: () => dispatch(selectRelevantReferentialTaxa(ownProps)),
+  expandAllReferentialTaxa: () => dispatch(expandAllReferentialTaxa(ownProps)),
+  expandAllPersonalTaxa: () => dispatch(expandAllPersonalTaxa(ownProps)),
 })
 
 
 export default
 connect(makeMapStateToProps, mapDispatchToProps)(
-  connect(null, mapDispatchToProps2)(TaxonSelection))
+  connect(null, mapDispatchToPropsWithOwnProps)(TaxonSelection))

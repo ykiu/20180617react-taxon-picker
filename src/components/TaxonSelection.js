@@ -77,6 +77,8 @@ class TaxonSelection extends Component {
             scientificNamesByTaxonIDs={this.props.personalScientificNamesByTaxonIDs}
             onItemSelect={this.handleItemSelect.bind(this)}
             onImportButtonClick={this.handleImportButtonClick.bind(this)}
+            expandedItemIDs={this.props.expandedPersonalTaxonIDs}
+            toggleItemExpansion={this.props.togglePersonalTaxonExpansion}
           />
         </SelectView>
         <ImportView viewType={this.state.viewType}>
@@ -87,6 +89,8 @@ class TaxonSelection extends Component {
             commonNamesByTaxonIDs={this.props.referentialCommonNamesByTaxonIDs}
             scientificNamesByTaxonIDs={this.props.referentialScientificNamesByTaxonIDs}
             checkedItemIDs={this.props.selectedReferentialTaxonIDs}
+            expandedItemIDs={this.props.expandedReferentialTaxonIDs}
+            toggleItemExpansion={this.props.toggleReferentialTaxonExpansion}
           />
         </ImportView>
         <Drawer
