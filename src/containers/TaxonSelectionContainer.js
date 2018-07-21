@@ -65,6 +65,8 @@ function makeMapStateToProps() {
       personalChildTaxaByParentIDs: createIndexOnPersonalTaxaByParentIDs(filterPersonalTaxa(state, props)),
       searchText: state.getIn(['ui', 'taxonSelection', 'searchText']),
       selectedReferentialTaxonIDs: state.getIn(['ui', 'taxonSelection', 'selectedReferentialTaxonIDs']),
+      expandedReferentialTaxonIDs: state.getIn(['ui', 'taxonSelection', 'expandedReferentialTaxonIDs']),
+      expandedPersonalTaxonIDs: state.getIn(['ui', 'taxonSelection', 'expandedPersonalTaxonIDs']),
     }
   }
 }
@@ -79,8 +81,6 @@ const mapDispatchToProps = (dispatch) => ({
 const mapDispatchToPropsWithOwnProps = (dispatch, ownProps) => ({
   ...ownProps,
   selectRelevantReferentialTaxa: () => dispatch(selectRelevantReferentialTaxa(ownProps)),
-  expandAllReferentialTaxa: () => dispatch(expandAllReferentialTaxa(ownProps)),
-  expandAllPersonalTaxa: () => dispatch(expandAllPersonalTaxa(ownProps)),
 })
 
 
