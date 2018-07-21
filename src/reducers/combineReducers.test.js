@@ -175,6 +175,29 @@ describe('combineReducers', () => {
       });
 
       expect(rootReducer(undefined, {})).toEqual(expectedInitialState);
-    })
+    });
+
+    it('accepts the entire state as an argument', () => {
+      const rootReducer = combineReducers([
+        ['foo', (state) => {
+          return true;
+        }],
+        ['bar', combineReducers([
+          ['baz', (state, action, entireState) => {
+            console.log(entireState)
+            return !entireState.get('foo');
+          }],
+        ])],
+      ]);
+
+      const expectedInitialState = Immutable.fromJS({
+        foo: true,
+        bar: {
+          baz: false
+        }
+      });
+
+      expect(rootReducer(undefined, {})).toEqual(expectedInitialState);
+    });
   })
 });

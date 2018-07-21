@@ -10,7 +10,7 @@ function validateNextState(nextState, reducerName, action) {
 }
 
 export default function(reducers, getDefaultState=Map) {
-  return function(state, action) {
+  return function(state, action, entireState) {
     const cleanedState = state === undefined? getDefaultState(): state;
     return cleanedState.withMutations(temporaryState => {
       reducers.forEach(reducerEntry => {
@@ -18,8 +18,10 @@ export default function(reducers, getDefaultState=Map) {
         const reducer = reducerEntry[1];
         const currentDomainState = temporaryState.get(reducerName);
 
-        // Freeze temporaryState to prevent accidental mutation inside the reducer function.
-        const nextDomainState = reducer(currentDomainState, action, Seq(temporaryState));
+        // The reason for wrapping temporaryState in a Seq instead of passing it down directly is
+        // to prevent accidental mutation inside the reducer function.
+        const cleanedEntireState = entireState === undefined? Seq(temporaryState): entireState;
+        const nextDomainState = reducer(currentDomainState, action, cleanedEntireState);
 
         validateNextState(nextDomainState, reducerName, action);
 
