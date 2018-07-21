@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux-immutable';
+import combineReducers from './combineReducers';
 import ui from './ui';
 import personalTaxa from './personalTaxa';
 import personalCommonNames from './personalCommonNames';
@@ -7,12 +7,12 @@ import referentialTaxa from './referentialTaxa';
 import referentialCommonNames from './referentialCommonNames';
 import referentialScientificNames from './referentialScientificNames';
 
-export default combineReducers({
-  personalTaxa,
-  personalCommonNames,
-  personalScientificNames,
-  referentialTaxa,
-  referentialCommonNames,
-  referentialScientificNames,
-  ui,
-});
+export default combineReducers([
+  ['personalTaxa', personalTaxa],
+  ['personalCommonNames', personalCommonNames],
+  ['personalScientificNames', personalScientificNames],
+  ['referentialTaxa', referentialTaxa],
+  ['referentialCommonNames', referentialCommonNames],
+  ['referentialScientificNames', referentialScientificNames],
+  ['ui', ui],
+]);

@@ -1,6 +1,6 @@
-import { combineReducers } from 'redux-immutable';
+import combineReducers from './combineReducers';
 import taxonSelection from './taxonSelection';
 
-export default combineReducers({
-  taxonSelection,
-});
+export default combineReducers([
+  ['taxonSelection', taxonSelection],
+]);
