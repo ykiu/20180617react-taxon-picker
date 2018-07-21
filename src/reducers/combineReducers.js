@@ -1,7 +1,7 @@
 // Similar to redux-immutable/combineReducers but passes in
 // the entire state as the third argument.
 
-import {Map} from 'immutable';
+import {Map, Seq} from 'immutable';
 
 function validateNextState(nextState, reducerName, action) {
   if (nextState === undefined) {
@@ -17,7 +17,9 @@ export default function(reducers, getDefaultState=Map) {
         const reducerName = reducerEntry[0];
         const reducer = reducerEntry[1];
         const currentDomainState = temporaryState.get(reducerName);
-        const nextDomainState = reducer(currentDomainState, action, temporaryState);
+
+        // Freeze temporaryState to prevent accidental mutation inside the reducer function.
+        const nextDomainState = reducer(currentDomainState, action, Seq(temporaryState));
 
         validateNextState(nextDomainState, reducerName, action);
 
