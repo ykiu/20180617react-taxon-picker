@@ -1,8 +1,11 @@
-import {Set} from 'immutable'
-
 import React, { Component } from 'react';
 
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 import Drawer from '@material-ui/core/Drawer';
+import IconButton from '@material-ui/core/IconButton';
+
+import DoneIcon from '@material-ui/icons/Done';
 
 import TaxonDrawerContainer from '../containers/TaxonDrawerContainer';
 import TaxonSearch from './TaxonSearch';
@@ -12,6 +15,12 @@ import EditableTaxonList from './EditableTaxonList'
 const VIEW_TYPES = {
   SELECT_VIEW: 'SELECT_VIEW',
   IMPORT_VIEW: 'IMPORT_VIEW',
+}
+
+const styles = {
+  flex: {
+    flexGrow: 1,
+  },
 }
 
 function SelectView(props) {
@@ -58,17 +67,40 @@ class TaxonSelection extends Component {
     this.props.changeSearchText(event.target.value);
   }
 
-  handleImportButtonClick() {
+  handleImportViewActivation() {
     this.setState({
       viewType: VIEW_TYPES.IMPORT_VIEW
     })
     this.props.selectRelevantReferentialTaxa();
   }
 
+  handleImportButtonClick() {
+    this.setState({
+      viewType: VIEW_TYPES.SELECT_VIEW
+    })
+    this.props.importReferentialTaxa(this.props.selectedReferentialTaxonIDs);
+  }
+
   render() {
     return (
       <div>
-        <TaxonSearch onSearchFieldChange={this.handleSearchFieldChange.bind(this)} />
+        <AppBar position='static'>
+          <Toolbar>
+            <TaxonSearch onSearchFieldChange={this.handleSearchFieldChange.bind(this)} />
+              {
+                this.state.viewType === VIEW_TYPES.IMPORT_VIEW &&
+                this.props.selectedReferentialTaxonIDs.count()?
+                <IconButton
+                  color="inherit"
+                  aria-label="Import"
+                  onClick={this.handleImportButtonClick.bind(this)}
+                >
+                  <DoneIcon />
+                </IconButton>:
+                null
+              }
+          </Toolbar>
+        </AppBar>
         <SelectView viewType={this.state.viewType}>
           <TaxonListAndImportPrompt
             searchText={this.props.searchText}
@@ -76,7 +108,7 @@ class TaxonSelection extends Component {
             commonNamesByTaxonIDs={this.props.personalCommonNamesByTaxonIDs}
             scientificNamesByTaxonIDs={this.props.personalScientificNamesByTaxonIDs}
             onItemSelect={this.handleItemSelect.bind(this)}
-            onImportButtonClick={this.handleImportButtonClick.bind(this)}
+            onImportButtonClick={this.handleImportViewActivation.bind(this)}
             expandedItemIDs={this.props.expandedPersonalTaxonIDs}
             toggleItemExpansion={this.props.togglePersonalTaxonExpansion}
           />

@@ -1,6 +1,7 @@
 import {Map} from 'immutable';
+import createNameReducer from './createPersonalName';
 
-const default_state = Map([
+const defaultState = Map([
   ['1', Map([
     ['id', '1'],
     ['name', 'Cyperaceae'],
@@ -32,6 +33,4 @@ const default_state = Map([
   ])],
 ]);
 
-export default function(state, action){
-  return default_state;
-};
+export default createNameReducer('scientific', defaultState);

@@ -7,9 +7,12 @@ import {
   activateReferentialTaxonSelectionInBulk,
   toggleReferentialTaxonExpansion,
   togglePersonalTaxonExpansion,
-  performReferentialTaxonExpansionInBulk,
-  performPersonalTaxonExpansionInBulk,
 } from '../actions/ui'
+
+import {
+  importReferentialTaxa,
+} from "../actions/personalTaxa";
+
 import makeCreateIndex from '../selectors/createIndex'
 import makeFilterTaxaBySearchTextLoose from '../selectors/filterTaxaBySearchTextLoose'
 import getSearchText from '../selectors/getSearchText'
@@ -76,6 +79,7 @@ const mapDispatchToProps = (dispatch) => ({
   toggleReferentialTaxonSelection: taxonID => dispatch(toggleReferentialTaxonSelection(taxonID)),
   toggleReferentialTaxonExpansion: taxonID => dispatch(toggleReferentialTaxonExpansion(taxonID)),
   togglePersonalTaxonExpansion: taxonID => dispatch(togglePersonalTaxonExpansion(taxonID)),
+  importReferentialTaxa: taxonIDs => dispatch(importReferentialTaxa(taxonIDs))
 })
 
 const mapDispatchToPropsWithOwnProps = (dispatch, ownProps) => ({

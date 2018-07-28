@@ -1,4 +1,4 @@
-import {Map, Stack} from 'immutable';
+import {OrderedMap, Stack} from 'immutable';
 
 import {createSelector} from 'reselect';
 
@@ -9,7 +9,7 @@ export default function makeGetParents(getTaxa, getOriginalTaxa) {
     (taxa, originalTaxaByIDs) => {
       /**@type {Stack} */
       let taxonStack = originalTaxaByIDs.toStack();
-      return Map().withMutations(resultTaxaByIDs => {
+      return OrderedMap().withMutations(resultTaxaByIDs => {
         while (taxonStack.count()) {
           const currentTaxon = taxonStack.peek();
           taxonStack = taxonStack.pop();

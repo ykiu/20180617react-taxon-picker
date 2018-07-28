@@ -1,6 +1,8 @@
 import {Map} from 'immutable';
 
-const default_state = Map([
+import createNameReducer from "./createPersonalName";
+
+const defaultState = Map([
   ['1', Map([
     ['id', '1'],
     ['name', 'カヤツリグサ科'],
@@ -38,6 +40,4 @@ const default_state = Map([
   ])],
 ]);
 
-export default function(state, action){
-  return default_state;
-};
+export default createNameReducer('common', defaultState);
