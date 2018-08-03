@@ -10,11 +10,14 @@ class TaxonListAndImportPrompt extends Component {
         (
           <EditableTaxonList
             onItemSelect={this.props.onItemSelect}
+            onItemCheck={this.props.onItemCheck}
             childTaxaByParentIDs={this.props.childTaxaByParentIDs}
             commonNamesByTaxonIDs={this.props.commonNamesByTaxonIDs}
             scientificNamesByTaxonIDs={this.props.scientificNamesByTaxonIDs}
             expandedItemIDs={this.props.expandedItemIDs}
             toggleItemExpansion={this.props.toggleItemExpansion}
+            checkedItemIDs={this.props.checkedItemIDs}
+            selectionType={this.props.selectionType}
           />
         ):
         (

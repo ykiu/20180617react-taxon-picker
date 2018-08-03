@@ -6,6 +6,7 @@ import {
   toggleReferentialTaxonSelection,
   activateReferentialTaxonSelectionInBulk,
   toggleReferentialTaxonExpansion,
+  performPersonalTaxonSelection,
   togglePersonalTaxonExpansion,
 } from '../actions/ui'
 
@@ -67,6 +68,7 @@ function makeMapStateToProps() {
       referentialChildTaxaByParentIDs: createIndexOnReferentialTaxaByParentIDs(filterReferentialTaxa(state, props)),
       personalChildTaxaByParentIDs: createIndexOnPersonalTaxaByParentIDs(filterPersonalTaxa(state, props)),
       searchText: state.getIn(['ui', 'taxonSelection', 'searchText']),
+      selectedPersonalTaxonIDs: Set([state.getIn(['ui', 'taxonSelection', 'selectedPersonalTaxonID'])]),
       selectedReferentialTaxonIDs: state.getIn(['ui', 'taxonSelection', 'selectedReferentialTaxonIDs']),
       expandedReferentialTaxonIDs: state.getIn(['ui', 'taxonSelection', 'expandedReferentialTaxonIDs']),
       expandedPersonalTaxonIDs: state.getIn(['ui', 'taxonSelection', 'expandedPersonalTaxonIDs']),
@@ -79,7 +81,8 @@ const mapDispatchToProps = (dispatch) => ({
   toggleReferentialTaxonSelection: taxonID => dispatch(toggleReferentialTaxonSelection(taxonID)),
   toggleReferentialTaxonExpansion: taxonID => dispatch(toggleReferentialTaxonExpansion(taxonID)),
   togglePersonalTaxonExpansion: taxonID => dispatch(togglePersonalTaxonExpansion(taxonID)),
-  importReferentialTaxa: (...args) => dispatch(importReferentialTaxa(...args))
+  importReferentialTaxa: (...args) => dispatch(importReferentialTaxa(...args)),
+  performPersonalTaxonSelection: taxonID => dispatch(performPersonalTaxonSelection(taxonID)),
 })
 
 const mapDispatchToPropsWithOwnProps = (dispatch, ownProps) => ({

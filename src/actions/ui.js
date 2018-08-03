@@ -4,6 +4,7 @@ import {
   ACTIVATE_REFERENTIAL_TAXON_SELECTION_IN_BULK,
   TOGGLE_REFERENTIAL_TAXON_EXPANSION,
   TOGGLE_PERSONAL_TAXON_EXPANSION,
+  PERFORM_PERSONAL_TAXON_SELECTION,
   PERFORM_PERSONAL_TAXON_EXPANSION_IN_BULK,
   PERFORM_REFERENTIAL_TAXON_EXPANSION_IN_BULK,
 } from './types';
@@ -30,6 +31,11 @@ export const toggleReferentialTaxonExpansion= (taxonID) => ({
 
 export const togglePersonalTaxonExpansion= (taxonID) => ({
   type: TOGGLE_PERSONAL_TAXON_EXPANSION,
+  taxonID
+});
+
+export const performPersonalTaxonSelection= (taxonID) => ({
+  type: PERFORM_PERSONAL_TAXON_SELECTION,
   taxonID
 });
 

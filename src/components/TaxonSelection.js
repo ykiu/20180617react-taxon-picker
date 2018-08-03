@@ -48,29 +48,11 @@ class TaxonSelection extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isTaxonDrawerOpen: false,
-      selectedTaxonID: null,
       viewType: VIEW_TYPES.SELECT_VIEW,
     };
   }
 
-  handleItemSelect(taxonID) {
-    this.setState({
-      selectedTaxonID: taxonID,
-      isTaxonDrawerOpen: true,
-    });
-  }
-
-  handleTaxonDrawerClose() {
-    this.setState({
-      isTaxonDrawerOpen: false,
-    });
-  }
-
   handleSearchFieldChange(event) {
-    this.setState({
-      isTaxonDrawerOpen: false,
-    })
     this.props.changeSearchText(event.target.value);
   }
 
@@ -114,15 +96,16 @@ class TaxonSelection extends Component {
             childTaxaByParentIDs={this.props.personalChildTaxaByParentIDs}
             commonNamesByTaxonIDs={this.props.personalCommonNamesByTaxonIDs}
             scientificNamesByTaxonIDs={this.props.personalScientificNamesByTaxonIDs}
-            onItemSelect={this.handleItemSelect.bind(this)}
+            onItemCheck={this.props.performPersonalTaxonSelection}
+            checkedItemIDs={this.props.selectedPersonalTaxonIDs}
             onImportButtonClick={this.handleImportViewActivation.bind(this)}
             expandedItemIDs={this.props.expandedPersonalTaxonIDs}
             toggleItemExpansion={this.props.togglePersonalTaxonExpansion}
+            selectionType='radio'
           />
         </SelectView>
         <ImportView viewType={this.state.viewType}>
           <EditableTaxonList
-            onItemSelect={this.handleItemSelect.bind(this)}
             onItemCheck={this.props.toggleReferentialTaxonSelection}
             childTaxaByParentIDs={this.props.referentialChildTaxaByParentIDs}
             commonNamesByTaxonIDs={this.props.referentialCommonNamesByTaxonIDs}
@@ -130,18 +113,9 @@ class TaxonSelection extends Component {
             checkedItemIDs={this.props.selectedReferentialTaxonIDs}
             expandedItemIDs={this.props.expandedReferentialTaxonIDs}
             toggleItemExpansion={this.props.toggleReferentialTaxonExpansion}
+            selectionType='check'
           />
         </ImportView>
-        <Drawer
-          open={this.state.isTaxonDrawerOpen}
-          onClose={this.handleTaxonDrawerClose.bind(this)}
-          anchor='bottom'
-          variant='persistent'
-        >
-          <TaxonDrawerContainer
-            selectedTaxonID={this.state.selectedTaxonID}
-          />
-        </Drawer>
       </div>
     )
   }
