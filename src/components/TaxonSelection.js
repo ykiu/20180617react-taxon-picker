@@ -17,12 +17,6 @@ const VIEW_TYPES = {
   IMPORT_VIEW: 'IMPORT_VIEW',
 }
 
-const styles = {
-  flex: {
-    flexGrow: 1,
-  },
-}
-
 function SelectView(props) {
   return (
     props.viewType === VIEW_TYPES.SELECT_VIEW?
