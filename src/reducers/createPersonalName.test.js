@@ -146,7 +146,7 @@ describe('personalTaxa', () => {
         ['personalScientificNames', personalScientificNames],
       ])
 
-      const acion = importReferentialTaxa(Set(['3', '4']));
+      const acion = importReferentialTaxa(Set(['3', '4']), oldID => `fake${oldID}`);
       const reducer = createNameReducer('common');
       const actual = reducer(personalCommonNames, acion, entireState);
       const expected = personalCommonNames.withMutations(commonName => commonName.set('fake3', Map([

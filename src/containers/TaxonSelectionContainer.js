@@ -79,7 +79,7 @@ const mapDispatchToProps = (dispatch) => ({
   toggleReferentialTaxonSelection: taxonID => dispatch(toggleReferentialTaxonSelection(taxonID)),
   toggleReferentialTaxonExpansion: taxonID => dispatch(toggleReferentialTaxonExpansion(taxonID)),
   togglePersonalTaxonExpansion: taxonID => dispatch(togglePersonalTaxonExpansion(taxonID)),
-  importReferentialTaxa: taxonIDs => dispatch(importReferentialTaxa(taxonIDs))
+  importReferentialTaxa: (...args) => dispatch(importReferentialTaxa(...args))
 })
 
 const mapDispatchToPropsWithOwnProps = (dispatch, ownProps) => ({

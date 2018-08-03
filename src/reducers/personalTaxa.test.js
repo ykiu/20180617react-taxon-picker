@@ -1,5 +1,3 @@
-// A superset of redux-immutable/tests/combineReducers.js
-
 import {Map, Set} from 'immutable'
 import personalTaxaReducer from './personalTaxa';
 import { importReferentialTaxa } from "../actions/personalTaxa";
@@ -148,15 +146,19 @@ describe('personalTaxa', () => {
         ['personalScientificNames', personalScientificNames],
       ])
 
-      const acion = importReferentialTaxa(Set(['3', '4']));
+      const getID = oldID => `fake${oldID}`;
+      const acion = importReferentialTaxa(Set(['3', '4']), getID);
       const actual = personalTaxaReducer(personalTaxa, acion, entireState);
-      const expected = personalTaxa.withMutations(taxa => taxa.set('fake3', Map([
-        ['id', 'fake3'],
-        ['parent', '2'],
-      ])).set('fake4', Map([
-        ['id', 'fake4'],
-        ['parent', 'fake3'],
-      ])))
+      const expected = personalTaxa.withMutations(taxa => taxa
+        .set('fake3', Map([
+          ['id', 'fake3'],
+          ['parent', '2'],
+        ]))
+        .set('fake4', Map([
+          ['id', 'fake4'],
+          ['parent', 'fake3'],
+        ]))
+      )
       expect(actual).toEqual(expected);
     });
   })

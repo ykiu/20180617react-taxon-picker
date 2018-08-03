@@ -30,7 +30,7 @@ export default function(nameType, defaultState) {
        const referentialNameSubset = subset(
          referentialNamesByTaxonIDs, referentialTaxa.keySeq())
          .valueSeq().flatten(1);
-       const personalNamesToInsert = updateIDs(referentialNameSubset);
+       const personalNamesToInsert = updateIDs(referentialNameSubset, action.getID);
        return state.merge(personalNamesToInsert.map(entity => [entity.get('id'), entity]))
      default:
        return state;
@@ -38,10 +38,10 @@ export default function(nameType, defaultState) {
  };
 }
 
-function updateIDs(entities) {
+function updateIDs(entities, getID) {
   return entities.map(entity => entity.withMutations(entity =>
     entity
-    .set('id', 'fake' + entity.get('id'))
-    .set('taxon', 'fake' + entity.get('taxon'))
+    .set('id', getID(entity.get('id')))
+    .set('taxon', getID(entity.get('taxon')))
   ))
 }

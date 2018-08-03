@@ -11,7 +11,7 @@ const createIndexOnReferentialCommonNamesByTaxonIDs = makeCreateIndex(
   state => state.get('referentialCommonNames'), 'taxon')
 const getParents = makeGetParents(state => state.get('referentialTaxa'), (_, props) => props);
 
-const default_state = Map([
+const defaultState = Map([
   ['1', Map([
     ['id', '1'],
     ['parent', null],
@@ -40,22 +40,22 @@ const default_state = Map([
 ]);
 
 
-export default function(state=default_state, action, entireState){
+export default function(state=defaultState, action, entireState){
   switch (action.type) {
     case IMPORT_REFERENTIAL_TAXA:
       const orderedReferentialTaxa = sortTaxaByDepth(
         subset(entireState.get('referentialTaxa'), action.IDs),
         entireState)
       const rootPersonalTaxonID = inferImportDestination(entireState, orderedReferentialTaxa);
-      const personalTaxaToInsert = updateIDs(orderedReferentialTaxa, rootPersonalTaxonID);
+      const personalTaxaToInsert = updateIDs(orderedReferentialTaxa, rootPersonalTaxonID, action.getID);
       return state.merge(personalTaxaToInsert)
     default:
       return state
   }
 };
 
-function updateIDs(orderedReferentialTaxa, rootTaxonID) {
-  const IDs = orderedReferentialTaxa.keySeq().map(x => 'fake' + x).toList();
+function updateIDs(orderedReferentialTaxa, rootTaxonID, getID) {
+  const IDs = orderedReferentialTaxa.keySeq().map(oldID => getID(oldID)).toList();
   const parentIDs = IDs.insert(0, rootTaxonID);
   return orderedReferentialTaxa
     .valueSeq()

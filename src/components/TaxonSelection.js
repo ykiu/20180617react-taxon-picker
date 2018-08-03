@@ -37,6 +37,19 @@ function ImportView(props) {
   )
 }
 
+function makeGetID() {
+  const newIDsByOldIDs = {};
+  return function getID(oldID) {
+    if (newIDsByOldIDs[oldID] !== undefined) {
+      return newIDsByOldIDs[oldID];
+    } else {
+      const newID = Math.random();
+      newIDsByOldIDs[oldID] = newID;
+      return newID;
+    }
+  }
+}
+
 class TaxonSelection extends Component {
   constructor(props) {
     super(props);
@@ -78,7 +91,7 @@ class TaxonSelection extends Component {
     this.setState({
       viewType: VIEW_TYPES.SELECT_VIEW
     })
-    this.props.importReferentialTaxa(this.props.selectedReferentialTaxonIDs);
+    this.props.importReferentialTaxa(this.props.selectedReferentialTaxonIDs, makeGetID());
   }
 
   render() {
