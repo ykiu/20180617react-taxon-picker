@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 
 import DoneIcon from '@material-ui/icons/Done';
 
-import TaxonDrawerContainer from '../containers/TaxonDrawerContainer';
 import TaxonSearch from './TaxonSearch';
 import TaxonListAndImportPrompt from './TaxonListAndImportPrompt'
 import EditableTaxonList from './EditableTaxonList'
