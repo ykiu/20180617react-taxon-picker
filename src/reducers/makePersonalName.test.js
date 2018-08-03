@@ -1,5 +1,5 @@
 import {Map, Set} from 'immutable'
-import createNameReducer from './createPersonalName';
+import createNameReducer from './makePersonalName';
 import { importReferentialTaxa } from "../actions/personalTaxa";
 
 

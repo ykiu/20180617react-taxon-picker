@@ -1,6 +1,6 @@
 import {Map} from 'immutable';
 
-import createNameReducer from "./createPersonalName";
+import createNameReducer from "./makePersonalName";
 
 const defaultState = Map([
   ['1', Map([
