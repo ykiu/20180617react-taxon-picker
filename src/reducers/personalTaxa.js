@@ -4,6 +4,7 @@ import {IMPORT_REFERENTIAL_TAXA} from '../actions/types';
 import makeCreateIndex from '../selectors/createIndex';
 import makeGetParents from '../selectors/getParents';
 import subset from '../selectors/subset';
+import sortTaxaByDepth from '../calculators/sortTaxaByDepth';
 
 const createIndexOnPersonalCommonNamesByNames = makeCreateIndex(
   state => state.get('personalCommonNames'), 'name')
@@ -44,6 +45,7 @@ export default function(state=defaultState, action, entireState){
   switch (action.type) {
     case IMPORT_REFERENTIAL_TAXA:
       const orderedReferentialTaxa = sortTaxaByDepth(
+        getParents,
         subset(entireState.get('referentialTaxa'), action.IDs),
         entireState)
       const rootPersonalTaxonID = inferImportDestination(entireState, orderedReferentialTaxa);
@@ -83,11 +85,4 @@ function inferImportDestination(entireState, orderedReferentialTaxa) {
     }
   });
   return rootPersonalTaxonID;
-}
-
-function sortTaxaByDepth(selectedReferentialTaxa, entireState) {
-  return selectedReferentialTaxa.sort((taxonA, taxonB) => (
-    getParents(entireState, List([taxonA])).count()
-    > getParents(entireState, List([taxonB])).count()) ?
-    1 : 0);
 }

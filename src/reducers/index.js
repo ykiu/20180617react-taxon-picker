@@ -8,11 +8,11 @@ import referentialCommonNames from './referentialCommonNames';
 import referentialScientificNames from './referentialScientificNames';
 
 export default combineReducers([
+  ['ui', ui],
   ['personalTaxa', personalTaxa],
   ['personalCommonNames', personalCommonNames],
   ['personalScientificNames', personalScientificNames],
   ['referentialTaxa', referentialTaxa],
   ['referentialCommonNames', referentialCommonNames],
   ['referentialScientificNames', referentialScientificNames],
-  ['ui', ui],
 ]);
